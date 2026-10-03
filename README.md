@@ -7,7 +7,7 @@ Data: UCI Online Retail II (CC BY 4.0).
 ## Roadmap
 | Step | What | Status |
 |---|---|---|
-| 1 | Download data, explore, define target and cutoff | **this drop** |
+| 1 | Download data, explore, define target and cutoff | first |
 | 2 | Feature engineering (RFM, tenure, returns) with a time-safe cutoff -> `features.parquet` | next |
 | 3 | Train baseline + gradient boosting, log metrics to `models/metrics.json` | next |
 | 4 | FastAPI service: `/health`, `/predict`, `/predict/batch`, model version in response | next |
