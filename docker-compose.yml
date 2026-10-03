@@ -1,0 +1,25 @@
+# Model and feature table are mounted, NOT baked into the image:
+#   - the image is the code (changes rarely); the model is an artifact (changes often)
+#   - roll out / roll back a model by changing MODEL_FILE and restarting, no rebuild
+services:
+  cvo-api:
+    build: .
+    image: cvo-lab-api:local
+    container_name: cvo-api
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: /models/${MODEL_FILE:-model.joblib}
+      FEATURES_PATH: /data/serving_features.parquet
+      META_PATH: /data/feature_meta.json
+    volumes:
+      - ./models:/models:ro
+      - ./data/processed/serving_features.parquet:/data/serving_features.parquet:ro
+      - ./data/processed/feature_meta.json:/data/feature_meta.json:ro
+    read_only: true          # container filesystem is immutable
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    # healthcheck comes from the Dockerfile (/ready)
